@@ -43,9 +43,8 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
             return ResponseBuilder.buildFailure(MessagesConstants.USER_NOT_FOUND);
         }
 
-        UserListResponse userListResponse = new UserListResponse();
-
         List<UserDTO> userDTOList = new ArrayList<>();
+
 
         userDTOList = applicationUsers
                 .stream()
@@ -113,12 +112,45 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
         else{
             ApplicationUser applicationUser = new ApplicationUser();
             applicationUser = modelMapper.map(applicationUserOptional.get(), ApplicationUser.class);
-            log.info("After mapping to ApplicationUSer: {}", applicationUser);
             applicationUser.setIsActive('N');
             applicationUserRepository.save(applicationUser);
-            log.info("After saving to repository: {}", applicationUserRepository);
             return ResponseBuilder.buildSuccess(MessagesConstants.USER_WAS_DELETED);
         }
+    }
+
+    @Override
+    public GenericResponse findDeletedUsers() {
+        final List<ApplicationUser> applicationUsers = applicationUserRepository.findAll();
+        if(applicationUsers.isEmpty()){
+            return ResponseBuilder.buildFailure(MessagesConstants.USER_NOT_FOUND);
+        }
+        ApplicationUser applicationUser = new ApplicationUser();
+
+        List<UserDTO> userDTOList = new ArrayList<>();
+
+        userDTOList = applicationUsers
+                .stream()
+                .map(appUsers -> modelMapper.map(appUsers, UserDTO.class))
+                .collect(Collectors.toList());
+
+        log.info("userDTOList: {}", userDTOList);
+
+        List<UserDTO> usersTrash = new ArrayList<>();
+
+        for (UserDTO userDTO: userDTOList) {
+            if(userDTO.getIsActive() == 'N'){
+                usersTrash.add(userDTO);
+            }
+        }
+        log.info("Trash: {}", usersTrash);
+
+        if(usersTrash.isEmpty()){
+            return ResponseBuilder.buildFailure(MessagesConstants.NO_TRASH);
+        }
+        else{
+            return ResponseBuilder.buildSuccess(MessagesConstants.USER_FOUND, usersTrash);
+        }
+
     }
 
 }
