@@ -8,4 +8,23 @@ public interface MessagesConstants {
     String USER_WAS_DELETED = "The User you were looking for was deleted!";
     String USER_DELETED = "The User is deleted successfully!";
     String NO_TRASH = "No users are in Trash Bin!";
+
+
+    String COURSE_SAVED = "Courses are stored in Database successfully!";
+    String COURSE_UPDATED = "Course was updated successfully!";
+    String COURSE_NOT_FOUND = "Could not find the Course!";
+    String COURSE_FOUND = "Course was found in the database!";
+    String COURSE_WAS_DELETED = "The Subject you were looking for was deleted!";
+
+
+    String SUBJECT_SAVED = "Subjects are stored in Database successfully!";
+    String SUBJECT_UPDATED = "Subjects was updated successfully!";
+    String SUBJECT_NOT_FOUND = "Could not find the Subject!";
+    String SUBJECT_FOUND = "Subject was found in the database!";
+    String SUBJECT_WAS_DELETED = "The Subject you were looking for was deleted!";
+
+    String EMAIL_PASSWORD_INCORRECT = "The username/password you entered is incorrect!";
+    String LOGIN_SUCCESSFUL = "The login was successful!";
+    String AUTH_SUCCESSFUL = "Authentication was successful!";
+
 }

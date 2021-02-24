@@ -49,4 +49,5 @@ public class Auditable<U> implements Serializable {
     public Auditable(Long id){
         this.id = id;
     }
+
 }

@@ -60,11 +60,6 @@ public class ApplicationUserController {
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
 
-//    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<GenericResponse> findAllUsers(){
-//        GenericResponse genericResponse = applicationUserService.getAllApplicationUser();
-//        return new ResponseEntity<>(genericResponse, HttpStatus.OK);
-//    }
 
     @GetMapping(value = APIPathConstants.SharedOperations.TRASH,
             produces = MediaType.APPLICATION_JSON_VALUE)

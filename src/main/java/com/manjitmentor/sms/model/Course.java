@@ -1,10 +1,17 @@
 package com.manjitmentor.sms.model;
 
+import lombok.*;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Table(name = "TBL_COURSES")
 public class Course extends Auditable<ApplicationUser> {
 
@@ -20,5 +27,9 @@ public class Course extends Auditable<ApplicationUser> {
     @Column(name = "CODE",
             length = 20)
     private String code;
+
+    public Course(Long id){
+        super(id);
+    }
 
 }
