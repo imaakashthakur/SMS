@@ -34,20 +34,21 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public GenericResponse login(AuthRequest request) {
-        Optional<ApplicationUser> applicationUserOptional = applicationUserRepository.findByEmailAddress(request.getEmailAddress());
-        log.info("applicationUserOptional: {}", applicationUserOptional);
+        Optional<ApplicationUser> applicationUserOptional = applicationUserRepository
+                .findByEmailAddress(request.getEmailAddress());
+
         if(!applicationUserOptional.isPresent()){
-            log.info("IT says that the email address is not present!");
             return ResponseBuilder.buildFailure(MessagesConstants.EMAIL_PASSWORD_INCORRECT);
         }
+
         if(applicationUserOptional.get().getIsActive() == 'N'){
             return ResponseBuilder.buildFailure(MessagesConstants.USER_WAS_DELETED);
         }
+
         else{
-            log.info("Email Address is found!");
             ApplicationUser applicationUser = applicationUserOptional.get();
             if(applicationUser.getPassword().equals(request.getPassword())) {
-                log.info("Password matched!");
+
                 Long currentTime = System.currentTimeMillis();
                 Long expiryInSeconds = 300L;
 

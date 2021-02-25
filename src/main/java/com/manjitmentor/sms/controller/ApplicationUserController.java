@@ -51,9 +51,7 @@ public class ApplicationUserController {
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
 
-    @PostMapping(value = APIPathConstants.SharedOperations.DELETE + "/" + APIPathConstants.PathVariable.USERID_WRAPPER,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = APIPathConstants.SharedOperations.DELETE + "/" + APIPathConstants.PathVariable.USERID_WRAPPER)
     public ResponseEntity<GenericResponse> deleteApplicationUser
             (@PathVariable(APIPathConstants.PathVariable.USERID) Long id){
         GenericResponse genericResponse = applicationUserService.deleteApplicationUser(id);

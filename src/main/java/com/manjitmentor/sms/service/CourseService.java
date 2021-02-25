@@ -13,4 +13,8 @@ public interface CourseService {
 
     GenericResponse updateCourse(UpdateCourseRequest request, Long id);
 
+    GenericResponse deleteCourse(Long id);
+
+    GenericResponse findDeletedCourses();
+
 }

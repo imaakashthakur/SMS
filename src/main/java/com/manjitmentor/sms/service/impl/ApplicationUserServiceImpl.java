@@ -75,11 +75,19 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
     public GenericResponse saveApplicationUser(SaveUserRequest request) {
         ApplicationUser applicationUser = modelMapper.map(request, ApplicationUser.class);
         applicationUser.setCreatedBy(new ApplicationUser(1L));
-        log.info("User save: {}", applicationUser);
+
+        List<ApplicationUser> applicationUserList = applicationUserRepository.findAll();
+
+        for(ApplicationUser a : applicationUserList){
+            if(a.getEmailAddress().equals(request.getEmailAddress())){
+                return ResponseBuilder.buildFailure(MessagesConstants.USER_ALREADY_PRESENT);
+            }
+        }
 
         applicationUserRepository.save(applicationUser);
 
         return ResponseBuilder.buildSuccess(MessagesConstants.USER_SAVED);
+
     }
 
     @Override
@@ -124,8 +132,6 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
         if(applicationUsers.isEmpty()){
             return ResponseBuilder.buildFailure(MessagesConstants.USER_NOT_FOUND);
         }
-        ApplicationUser applicationUser = new ApplicationUser();
-
         List<UserDTO> userDTOList = new ArrayList<>();
 
         userDTOList = applicationUsers

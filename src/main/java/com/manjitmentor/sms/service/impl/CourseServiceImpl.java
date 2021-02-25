@@ -45,8 +45,6 @@ public class CourseServiceImpl implements CourseService {
                 .map(course -> modelMapper.map(course, CourseDTO.class))
                 .collect(Collectors.toList());
 
-        log.info("courseDTOList: {}", courseDTOList);
-
         return ResponseBuilder.buildSuccess(MessagesConstants.COURSE_FOUND, courseDTOList);
 
     }
@@ -57,6 +55,9 @@ public class CourseServiceImpl implements CourseService {
         if(!courseOptional.isPresent()){
             return ResponseBuilder.buildFailure(MessagesConstants.COURSE_NOT_FOUND);
         }
+        if(courseOptional.get().getIsActive() == 'N'){
+            return ResponseBuilder.buildFailure(MessagesConstants.COURSE_WAS_DELETED);
+        }
         CourseDTO response = modelMapper.map(courseOptional.get(), CourseDTO.class);
         log.info("Response: {}", response);
         return ResponseBuilder.buildSuccess(MessagesConstants.COURSE_FOUND, response);
@@ -66,7 +67,9 @@ public class CourseServiceImpl implements CourseService {
     public GenericResponse saveCourse(SaveCourseRequest request) {
         Course course = modelMapper.map(request, Course.class);
         course.setCreatedBy(new ApplicationUser(1L));
+        course.setIsActive('Y');
         log.info("course: {}", course);
+        log.info(course.getCreatedBy().toString());
         courseRepository.save(course);
         return ResponseBuilder.buildSuccess(MessagesConstants.COURSE_SAVED);
     }
@@ -85,5 +88,39 @@ public class CourseServiceImpl implements CourseService {
         courseRepository.save(course);
         return ResponseBuilder.buildSuccess(MessagesConstants.COURSE_UPDATED);
 
+    }
+
+    @Override
+    public GenericResponse deleteCourse(Long id) {
+        Optional<Course> courseOptional = courseRepository.findById(id);
+        if(!courseOptional.isPresent()){
+            return ResponseBuilder.buildFailure(MessagesConstants.COURSE_NOT_FOUND);
+        }
+        else{
+            Course course = new Course();
+            course = modelMapper.map(courseOptional.get(), Course.class);
+            course.setIsActive('N');
+            courseRepository.save(course);
+            return ResponseBuilder.buildSuccess(MessagesConstants.COURSE_WAS_DELETED);
+        }
+    }
+
+    @Override
+    public GenericResponse findDeletedCourses() {
+        final List<Course> courseOptional = courseRepository.findAll();
+        if(courseOptional.isEmpty()){
+            ResponseBuilder.buildFailure(MessagesConstants.COURSE_NOT_FOUND);
+        }
+        List<CourseDTO> courseDTOList = new ArrayList<>();
+        courseDTOList = courseOptional.stream()
+                .map(course -> modelMapper.map(course, CourseDTO.class))
+                .collect(Collectors.toList());
+        List<CourseDTO> courseTrash = new ArrayList<>();
+        for(CourseDTO c : courseDTOList){
+            if(c.getIsActive() == 'N'){
+                courseTrash.add(c);
+            }
+        }
+        return ResponseBuilder.buildSuccess(MessagesConstants.COURSE_FOUND, courseTrash);
     }
 }

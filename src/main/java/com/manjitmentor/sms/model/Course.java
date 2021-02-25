@@ -28,6 +28,12 @@ public class Course extends Auditable<ApplicationUser> {
             length = 20)
     private String code;
 
+    @Column(name = "isActive",
+            columnDefinition = "CHAR default 'Y'",
+            length = 1,
+            nullable = false)
+    private Character isActive;
+
     public Course(Long id){
         super(id);
     }

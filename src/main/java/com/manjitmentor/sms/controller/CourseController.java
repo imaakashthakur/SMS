@@ -1,6 +1,5 @@
 package com.manjitmentor.sms.controller;
 
-import com.manjitmentor.sms.builder.ResponseBuilder;
 import com.manjitmentor.sms.constant.APIPathConstants;
 import com.manjitmentor.sms.dto.GenericResponse;
 import com.manjitmentor.sms.request.SaveCourseRequest;
@@ -10,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.print.attribute.standard.Media;
 
 @RestController
 @RequestMapping(APIPathConstants.COURSES)
@@ -48,6 +45,18 @@ public class CourseController {
     public ResponseEntity<GenericResponse> updateCourse(@PathVariable(APIPathConstants.PathVariable.COURSEID) Long id,
                                                         @RequestBody UpdateCourseRequest request){
         GenericResponse genericResponse = courseServiceImpl.updateCourse(request, id);
+        return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+    }
+
+    @GetMapping(value = APIPathConstants.SharedOperations.DELETE + "/" + APIPathConstants.PathVariable.COURSEID_WRAPPER)
+    public ResponseEntity<GenericResponse> deleteCourse(@PathVariable(APIPathConstants.PathVariable.COURSEID) Long id){
+        GenericResponse genericResponse = courseServiceImpl.deleteCourse(id);
+        return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+    }
+
+    @GetMapping(value = APIPathConstants.SharedOperations.TRASH)
+    public ResponseEntity<GenericResponse> findDeletedCourses(){
+        GenericResponse genericResponse = courseServiceImpl.findDeletedCourses();
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
 

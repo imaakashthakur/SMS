@@ -8,6 +8,7 @@ public interface MessagesConstants {
     String USER_WAS_DELETED = "The User you were looking for was deleted!";
     String USER_DELETED = "The User is deleted successfully!";
     String NO_TRASH = "No users are in Trash Bin!";
+    String USER_ALREADY_PRESENT = "The email address you used is already registered!";
 
 
     String COURSE_SAVED = "Courses are stored in Database successfully!";

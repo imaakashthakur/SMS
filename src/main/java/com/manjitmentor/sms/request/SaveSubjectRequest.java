@@ -1,19 +1,13 @@
-package com.manjitmentor.sms.response.dto;
-
+package com.manjitmentor.sms.request;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.io.Serializable;
-
 @Getter
 @Setter
-@ToString
-
-public class CourseDTO implements Serializable {
+public class SaveSubjectRequest implements Serializable {
     private String name;
     private String description;
     private String code;
-    private Character isActive;
 }

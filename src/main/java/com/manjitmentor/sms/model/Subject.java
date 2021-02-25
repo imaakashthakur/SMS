@@ -1,10 +1,17 @@
 package com.manjitmentor.sms.model;
 
+import lombok.*;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
+@ToString
 @Table(name = "TBL_SUBJECTS")
 public class Subject extends Auditable<ApplicationUser> {
 
@@ -20,5 +27,15 @@ public class Subject extends Auditable<ApplicationUser> {
     @Column(name = "CODE",
             length = 20)
     private String code;
+
+    @Column(name = "isActive",
+            columnDefinition = "CHAR default 'Y'",
+            length = 1,
+            nullable = false)
+    private Character isActive;
+
+    public Subject(Long id){
+        super(id);
+    }
 
 }
