@@ -9,6 +9,7 @@ public interface MessagesConstants {
     String USER_DELETED = "The User is deleted successfully!";
     String NO_TRASH = "No users are in Trash Bin!";
     String USER_ALREADY_PRESENT = "The email address you used is already registered!";
+    String USER_CANT_BE_EMPTY ="Name/Password can't be empty!";
 
 
     String COURSE_SAVED = "Courses are stored in Database successfully!";
@@ -16,6 +17,7 @@ public interface MessagesConstants {
     String COURSE_NOT_FOUND = "Could not find the Course!";
     String COURSE_FOUND = "Course was found in the database!";
     String COURSE_WAS_DELETED = "The Subject you were looking for was deleted!";
+    String COURSE_CANT_BE_EMPTY = "Courses Name/Description/Code can't be left empty!";
 
 
     String SUBJECT_SAVED = "Subjects are stored in Database successfully!";
@@ -23,6 +25,7 @@ public interface MessagesConstants {
     String SUBJECT_NOT_FOUND = "Could not find the Subject!";
     String SUBJECT_FOUND = "Subject was found in the database!";
     String SUBJECT_WAS_DELETED = "The Subject you were looking for was deleted!";
+    String SUBJECT_CANT_BE_EMPTY = "Subjects Name/Description/Code can't be left empty!";
 
     String EMAIL_PASSWORD_INCORRECT = "The username/password you entered is incorrect!";
     String LOGIN_SUCCESSFUL = "The login was successful!";

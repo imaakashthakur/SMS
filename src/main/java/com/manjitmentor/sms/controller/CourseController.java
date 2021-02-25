@@ -39,11 +39,12 @@ public class CourseController {
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
 
-    @PostMapping(value = APIPathConstants.SharedOperations.UPDATE + "/" + APIPathConstants.PathVariable.COURSEID_WRAPPER,
-    consumes = MediaType.APPLICATION_JSON_VALUE,
-    produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GenericResponse> updateCourse(@PathVariable(APIPathConstants.PathVariable.COURSEID) Long id,
-                                                        @RequestBody UpdateCourseRequest request){
+    @PostMapping(value = APIPathConstants.SharedOperations.UPDATE + "/" +
+            APIPathConstants.PathVariable.COURSEID_WRAPPER,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GenericResponse> updateCourse(@PathVariable(APIPathConstants.PathVariable.COURSEID)
+                                                                    Long id, @RequestBody UpdateCourseRequest request){
         GenericResponse genericResponse = courseServiceImpl.updateCourse(request, id);
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }

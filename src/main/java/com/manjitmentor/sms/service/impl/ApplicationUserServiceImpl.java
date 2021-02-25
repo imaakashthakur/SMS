@@ -75,6 +75,7 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
     public GenericResponse saveApplicationUser(SaveUserRequest request) {
         ApplicationUser applicationUser = modelMapper.map(request, ApplicationUser.class);
         applicationUser.setCreatedBy(new ApplicationUser(1L));
+        applicationUser.setIsActive('Y');
 
         List<ApplicationUser> applicationUserList = applicationUserRepository.findAll();
 
@@ -82,6 +83,11 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
             if(a.getEmailAddress().equals(request.getEmailAddress())){
                 return ResponseBuilder.buildFailure(MessagesConstants.USER_ALREADY_PRESENT);
             }
+        }
+
+        if(applicationUser.getFirstName().isEmpty() || applicationUser.getLastName().isEmpty() ||
+                applicationUser.getPassword().isEmpty()){
+            return ResponseBuilder.buildFailure(MessagesConstants.USER_CANT_BE_EMPTY);
         }
 
         applicationUserRepository.save(applicationUser);
@@ -99,9 +105,15 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
 
         else {
             ApplicationUser applicationUser = modelMapper.map(request, ApplicationUser.class);
+
+            if(applicationUser.getFirstName().isEmpty() || applicationUser.getLastName().isEmpty() ||
+                    applicationUser.getPassword().isEmpty()){
+                return ResponseBuilder.buildFailure(MessagesConstants.USER_CANT_BE_EMPTY);
+            }
+
             applicationUser.setId(id);
             applicationUser.setCreatedBy(new ApplicationUser(1L));
-
+            applicationUser.setIsActive('Y');
             applicationUserRepository.save(applicationUser);
 
             return ResponseBuilder.buildSuccess(MessagesConstants.USER_UPDATED);

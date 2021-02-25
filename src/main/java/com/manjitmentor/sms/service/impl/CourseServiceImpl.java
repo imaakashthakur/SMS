@@ -66,6 +66,9 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public GenericResponse saveCourse(SaveCourseRequest request) {
         Course course = modelMapper.map(request, Course.class);
+        if(course.getName().isEmpty() || course.getCode().isEmpty() || course.getDescription().isEmpty()){
+            return ResponseBuilder.buildFailure(MessagesConstants.COURSE_CANT_BE_EMPTY);
+        }
         course.setCreatedBy(new ApplicationUser(1L));
         course.setIsActive('Y');
         log.info("course: {}", course);
@@ -82,8 +85,12 @@ public class CourseServiceImpl implements CourseService {
         }
         Course course = new Course();
         course = modelMapper.map(request, Course.class);
+        if(course.getName().isEmpty() || course.getCode().isEmpty() || course.getDescription().isEmpty()){
+            return ResponseBuilder.buildFailure(MessagesConstants.COURSE_CANT_BE_EMPTY);
+        }
         course.setId(id);
         course.setCreatedBy(new ApplicationUser(1L));
+        course.setIsActive('Y');
         log.info("course: {}", course);
         courseRepository.save(course);
         return ResponseBuilder.buildSuccess(MessagesConstants.COURSE_UPDATED);

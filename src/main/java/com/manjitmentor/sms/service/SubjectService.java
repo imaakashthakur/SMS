@@ -11,7 +11,7 @@ public interface SubjectService {
 
     GenericResponse saveSubject(SaveSubjectRequest saveSubjectRequest);
 
-    GenericResponse updateSubject(UpdateSubjectRequest updateSubjectRequest, Long id);
+    GenericResponse updateSubject(UpdateSubjectRequest request, Long id);
 
     GenericResponse deleteSubject(Long id);
 

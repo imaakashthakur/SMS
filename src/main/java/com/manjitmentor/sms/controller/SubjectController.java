@@ -41,11 +41,12 @@ public class SubjectController {
 
     @PostMapping(value = APIPathConstants.SharedOperations.UPDATE +
             "/" + APIPathConstants.PathVariable.SUBJECTID_WRAPPER,
-    produces = MediaType.APPLICATION_JSON_VALUE,
-    consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GenericResponse> updateSubject(@PathVariable(APIPathConstants.PathVariable.SUBJECTID) @RequestBody UpdateSubjectRequest request, Long id){
-       GenericResponse genericResponse = subjectServiceImpl.updateSubject(request, id);
-       return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GenericResponse> updateSubject(@PathVariable(APIPathConstants.PathVariable.SUBJECTID)
+                                                             Long id, @RequestBody UpdateSubjectRequest request){
+        GenericResponse genericResponse = subjectServiceImpl.updateSubject(request, id);
+        return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
 
     @GetMapping(value = APIPathConstants.SharedOperations.DELETE + "/" + APIPathConstants.PathVariable.SUBJECTID_WRAPPER)

@@ -64,6 +64,9 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public GenericResponse saveSubject(SaveSubjectRequest request) {
         Subject subject = modelMapper.map(request, Subject.class);
+        if(subject.getName().isEmpty() || subject.getDescription().isEmpty() || subject.getCode().isEmpty()){
+            return ResponseBuilder.buildFailure(MessagesConstants.SUBJECT_CANT_BE_EMPTY);
+        }
         subject.setCreatedBy(new ApplicationUser(1L));
         subject.setIsActive('Y');
         subjectRepository.save(subject);
@@ -72,18 +75,25 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public GenericResponse updateSubject(UpdateSubjectRequest request, Long id) {
+        log.info("Entered updateSubject() method!");
         Optional<Subject> subjectOptional = subjectRepository.findById(id);
+        log.info("SubjectOptional: {}", subjectOptional);
         if(!subjectOptional.isPresent()){
             return ResponseBuilder.buildFailure(MessagesConstants.SUBJECT_NOT_FOUND);
         }
-        else{
-            Subject subject = new Subject();
-            subject = modelMapper.map(request, Subject.class);
-            subject.setId(id);
-            subject.setCreatedBy(new ApplicationUser(1L));
-            subjectRepository.save(subject);
-            return ResponseBuilder.buildSuccess(MessagesConstants.SUBJECT_SAVED);
+
+        Subject subject = new Subject();
+        subject = modelMapper.map(request, Subject.class);
+        log.info("subjectResponse: {}", subject);
+        if(subject.getName().isEmpty() || subject.getDescription().isEmpty() || subject.getCode().isEmpty()){
+            return ResponseBuilder.buildFailure(MessagesConstants.SUBJECT_CANT_BE_EMPTY);
         }
+        subject.setId(id);
+        subject.setIsActive('Y');
+        subject.setCreatedBy(new ApplicationUser(1L));
+        subjectRepository.save(subject);
+        return ResponseBuilder.buildSuccess(MessagesConstants.SUBJECT_SAVED);
+
     }
 
     @Override
