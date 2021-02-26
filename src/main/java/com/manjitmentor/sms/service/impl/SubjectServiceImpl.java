@@ -160,7 +160,7 @@ public class SubjectServiceImpl implements SubjectService {
         log.info("subjectTrash: {}", subjectTrash);
 
         if(subjectTrash.isEmpty()){
-            return ResponseBuilder.buildFailure(ResponseMsgConstant.SUBJECT_NOT_FOUND);
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.SUBJECT_NO_TRASH);
         }
         else {
             return ResponseBuilder.buildSuccess(ResponseMsgConstant.SUBJECT_FOUND, subjectTrash);
@@ -182,6 +182,21 @@ public class SubjectServiceImpl implements SubjectService {
         deletedSubject.setIsActive('Y');
         subjectRepository.save(deletedSubject);
         return ResponseBuilder.buildSuccess(ResponseMsgConstant.SUBJECT_ROLLEDBACK);
+    }
+
+    @Override
+    public GenericResponse rollBackAllDeletedSubjects(){
+        List<Subject> subjectList = subjectRepository.findAll();
+        if(subjectList.isEmpty()){
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.SUBJECT_NOT_FOUND);
+        }
+        for(Subject s : subjectList){
+            if(s.getIsActive() == 'N'){
+                s.setIsActive('Y');
+                subjectRepository.save(s);
+            }
+        }
+        return ResponseBuilder.buildSuccess(ResponseMsgConstant.ALL_SUBJECTS_ROLLEDBACK);
     }
 }
 

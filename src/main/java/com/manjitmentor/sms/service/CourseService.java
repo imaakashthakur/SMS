@@ -21,5 +21,7 @@ public interface CourseService {
 
     GenericResponse rollBackDeletedCourse(Long id);
 
+    GenericResponse rollBackAllDeletedCourses();
+
 
 }

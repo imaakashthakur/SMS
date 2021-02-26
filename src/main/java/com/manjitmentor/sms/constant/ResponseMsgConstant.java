@@ -12,6 +12,7 @@ public interface ResponseMsgConstant {
     String USER_CANT_BE_EMPTY ="Name/Password can't be empty!";
     String USER_NOT_IN_TRASH = "User is not in trash. It is already Active!";
     String USER_ROLLEDBACK = "The deleted User was rolled back successfully!";
+    String ALL_USERS_ROLLEDBACK = "All the deleted users are rolled back successfully!";
 
 
     String COURSE_SAVED = "Courses are stored in Database successfully!";
@@ -23,6 +24,7 @@ public interface ResponseMsgConstant {
     String COURSE_NO_TRASH = "There are no Courses in Trash Bin!";
     String COURSE_NOT_IN_TRASH = "Course is not in trash. It is already Active!";
     String COURSE_ROLLEDBACK = "The deleted Course was rolled back successfully!";
+    String ALL_COURSE_ROLLEDBACK = "All the deleted Courses are rolled back successfully!";
 
     String SUBJECT_SAVED = "Subjects are stored in Database successfully!";
     String SUBJECT_UPDATED = "Subjects was updated successfully!";
@@ -33,6 +35,7 @@ public interface ResponseMsgConstant {
     String SUBJECT_NO_TRASH = "There are no Subjects in Trash Bin!";
     String SUBJECT_NOT_IN_TRASH = "Subject is not in trash. It is already Active!";
     String SUBJECT_ROLLEDBACK = "The deleted Subject was rolled back successfully!";
+    String ALL_SUBJECTS_ROLLEDBACK = "All deleted Subjects are rolled back successfully!";
 
     String EMAIL_PASSWORD_INCORRECT = "The username/password you entered is incorrect!";
     String LOGIN_SUCCESSFUL = "The login was successful!";

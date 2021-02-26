@@ -20,4 +20,6 @@ public interface ApplicationUserService {
     GenericResponse findDeletedUsers();
 
     GenericResponse rollBackDeletedUsers(Long id);
+
+    GenericResponse rollBackAllDeletedUsers();
 }

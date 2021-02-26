@@ -84,4 +84,10 @@ public class ApplicationUserController {
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
 
+    @GetMapping(value = APIPathConstants.SharedOperations.ROLLBACK)
+    public ResponseEntity<GenericResponse> rollBackAllDeletedUsers(){
+        GenericResponse genericResponse = applicationUserService.rollBackAllDeletedUsers();
+        return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+    }
+
 }

@@ -218,5 +218,20 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
         return ResponseBuilder.buildSuccess(ResponseMsgConstant.USER_ROLLEDBACK);
     }
 
+    @Override
+    public GenericResponse rollBackAllDeletedUsers(){
+        List<ApplicationUser> applicationUsersList = applicationUserRepository.findAll();
+        if(applicationUsersList.isEmpty()) {
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.USER_NOT_FOUND);
+        }
+        for(ApplicationUser a : applicationUsersList){
+            if(a.getIsActive() == 'N'){
+                a.setIsActive('Y');
+                applicationUserRepository.save(a);
+            }
+        }
+        return ResponseBuilder.buildSuccess(ResponseMsgConstant.ALL_USERS_ROLLEDBACK);
+    }
+
 }
 

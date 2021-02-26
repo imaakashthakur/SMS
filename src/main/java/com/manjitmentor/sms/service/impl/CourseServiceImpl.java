@@ -169,4 +169,19 @@ public class CourseServiceImpl implements CourseService {
 
         return ResponseBuilder.buildSuccess(ResponseMsgConstant.COURSE_ROLLEDBACK);
     }
+
+    @Override
+    public GenericResponse rollBackAllDeletedCourses() {
+        List<Course> courseList = courseRepository.findAll();
+        if(courseList.isEmpty()){
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.COURSE_NOT_FOUND);
+        }
+        for(Course c : courseList){
+            if(c.getIsActive() == 'N'){
+                c.setIsActive('Y');
+                courseRepository.save(c);
+            }
+        }
+        return ResponseBuilder.buildSuccess(ResponseMsgConstant.ALL_COURSE_ROLLEDBACK);
+    }
 }

@@ -84,4 +84,10 @@ public class SubjectController {
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
 
+    @GetMapping(value = APIPathConstants.SharedOperations.ROLLBACK)
+    public ResponseEntity<GenericResponse> rollBackAllDeletedSubjects(){
+        GenericResponse genericResponse = subjectServiceImpl.rollBackAllDeletedSubjects();
+        return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+    }
+
 }
