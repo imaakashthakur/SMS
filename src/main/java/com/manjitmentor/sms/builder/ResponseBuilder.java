@@ -1,6 +1,5 @@
 package com.manjitmentor.sms.builder;
 
-import com.manjitmentor.sms.constant.MessagesConstants;
 import com.manjitmentor.sms.dto.GenericResponse;
 
 public class ResponseBuilder {

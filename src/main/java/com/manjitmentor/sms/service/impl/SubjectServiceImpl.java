@@ -1,7 +1,7 @@
 package com.manjitmentor.sms.service.impl;
 
 import com.manjitmentor.sms.builder.ResponseBuilder;
-import com.manjitmentor.sms.constant.MessagesConstants;
+import com.manjitmentor.sms.constant.ResponseMsgConstant;
 import com.manjitmentor.sms.dto.GenericResponse;
 import com.manjitmentor.sms.model.ApplicationUser;
 import com.manjitmentor.sms.model.Subject;
@@ -30,12 +30,30 @@ public class SubjectServiceImpl implements SubjectService {
         this.subjectRepository = subjectRepository;
         this.modelMapper = modelMapper;
     }
+    @Override
+    public GenericResponse findActiveSubjects(){
+        List<Subject> allSubjects = subjectRepository.findAll();
+        if(allSubjects.isEmpty()){
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.SUBJECT_NOT_FOUND);
+        }
+        List<SubjectDTO> subjectDTOList = new ArrayList<>();
+        subjectDTOList = allSubjects.stream()
+                .map(subject -> modelMapper.map(subject, SubjectDTO.class))
+                .collect(Collectors.toList());
+        List<SubjectDTO> activeSubjects = new ArrayList<>();
+        for(SubjectDTO s : subjectDTOList){
+            if(s.getIsActive() == 'Y'){
+                activeSubjects.add(s);
+            }
+        }
+        return ResponseBuilder.buildSuccess(ResponseMsgConstant.SUBJECT_FOUND, activeSubjects);
+    }
 
     @Override
     public GenericResponse findAllSubjects() {
         final List<Subject> subjectList = subjectRepository.findAll();
         if(subjectList.isEmpty()){
-            return ResponseBuilder.buildFailure(MessagesConstants.SUBJECT_NOT_FOUND);
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.SUBJECT_NOT_FOUND);
         }
         List<SubjectDTO> response = new ArrayList<>();
         response = subjectList
@@ -43,21 +61,21 @@ public class SubjectServiceImpl implements SubjectService {
                 .map(subject -> modelMapper.map(subject, SubjectDTO.class))
                 .collect(Collectors.toList());
         log.info("subjects: {}", response);
-        return ResponseBuilder.buildSuccess(MessagesConstants.COURSE_FOUND, response);
+        return ResponseBuilder.buildSuccess(ResponseMsgConstant.COURSE_FOUND, response);
     }
 
     @Override
     public GenericResponse findSubjectById(Long id) {
         Optional<Subject> subjectOptional = subjectRepository.findById(id);
         if(!subjectOptional.isPresent()){
-            return ResponseBuilder.buildFailure(MessagesConstants.SUBJECT_NOT_FOUND);
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.SUBJECT_NOT_FOUND);
         }
         if(subjectOptional.get().getIsActive() == 'N'){
-            return ResponseBuilder.buildFailure(MessagesConstants.SUBJECT_WAS_DELETED);
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.SUBJECT_WAS_DELETED);
         }
         else {
             SubjectDTO response = modelMapper.map(subjectOptional.get(), SubjectDTO.class);
-            return ResponseBuilder.buildSuccess(MessagesConstants.SUBJECT_FOUND, response);
+            return ResponseBuilder.buildSuccess(ResponseMsgConstant.SUBJECT_FOUND, response);
         }
     }
 
@@ -65,12 +83,12 @@ public class SubjectServiceImpl implements SubjectService {
     public GenericResponse saveSubject(SaveSubjectRequest request) {
         Subject subject = modelMapper.map(request, Subject.class);
         if(subject.getName().isEmpty() || subject.getDescription().isEmpty() || subject.getCode().isEmpty()){
-            return ResponseBuilder.buildFailure(MessagesConstants.SUBJECT_CANT_BE_EMPTY);
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.SUBJECT_CANT_BE_EMPTY);
         }
         subject.setCreatedBy(new ApplicationUser(1L));
         subject.setIsActive('Y');
         subjectRepository.save(subject);
-        return ResponseBuilder.buildSuccess(MessagesConstants.SUBJECT_SAVED);
+        return ResponseBuilder.buildSuccess(ResponseMsgConstant.SUBJECT_SAVED);
     }
 
     @Override
@@ -79,20 +97,20 @@ public class SubjectServiceImpl implements SubjectService {
         Optional<Subject> subjectOptional = subjectRepository.findById(id);
         log.info("SubjectOptional: {}", subjectOptional);
         if(!subjectOptional.isPresent()){
-            return ResponseBuilder.buildFailure(MessagesConstants.SUBJECT_NOT_FOUND);
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.SUBJECT_NOT_FOUND);
         }
 
         Subject subject = new Subject();
         subject = modelMapper.map(request, Subject.class);
         log.info("subjectResponse: {}", subject);
         if(subject.getName().isEmpty() || subject.getDescription().isEmpty() || subject.getCode().isEmpty()){
-            return ResponseBuilder.buildFailure(MessagesConstants.SUBJECT_CANT_BE_EMPTY);
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.SUBJECT_CANT_BE_EMPTY);
         }
         subject.setId(id);
         subject.setIsActive('Y');
         subject.setCreatedBy(new ApplicationUser(1L));
         subjectRepository.save(subject);
-        return ResponseBuilder.buildSuccess(MessagesConstants.SUBJECT_SAVED);
+        return ResponseBuilder.buildSuccess(ResponseMsgConstant.SUBJECT_SAVED);
 
     }
 
@@ -101,7 +119,7 @@ public class SubjectServiceImpl implements SubjectService {
 
         Optional<Subject> subjectOptional = subjectRepository.findById(id);
         if(!subjectOptional.isPresent()){
-            return ResponseBuilder.buildFailure(MessagesConstants.SUBJECT_NOT_FOUND);
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.SUBJECT_NOT_FOUND);
         }
         else{
             Subject subject = new Subject();
@@ -109,7 +127,7 @@ public class SubjectServiceImpl implements SubjectService {
             subject.setCreatedBy(new ApplicationUser(1L));
             subject.setIsActive('N');
             subjectRepository.save(subject);
-            return ResponseBuilder.buildSuccess(MessagesConstants.SUBJECT_WAS_DELETED);
+            return ResponseBuilder.buildSuccess(ResponseMsgConstant.SUBJECT_WAS_DELETED);
         }
     }
 
@@ -118,7 +136,7 @@ public class SubjectServiceImpl implements SubjectService {
         log.info("Entered findDeletedStudents() in StudentServiceImpl!");
         final List<Subject> subjectList = subjectRepository.findAll();
         if(subjectList.isEmpty()){
-            return ResponseBuilder.buildFailure(MessagesConstants.SUBJECT_NOT_FOUND);
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.SUBJECT_NOT_FOUND);
         }
         log.info("subjectList: {}", subjectList);
 
@@ -142,10 +160,10 @@ public class SubjectServiceImpl implements SubjectService {
         log.info("subjectTrash: {}", subjectTrash);
 
         if(subjectTrash.isEmpty()){
-            return ResponseBuilder.buildFailure(MessagesConstants.SUBJECT_NOT_FOUND);
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.SUBJECT_NOT_FOUND);
         }
         else {
-            return ResponseBuilder.buildSuccess(MessagesConstants.SUBJECT_FOUND, subjectTrash);
+            return ResponseBuilder.buildSuccess(ResponseMsgConstant.SUBJECT_FOUND, subjectTrash);
         }
     }
 }

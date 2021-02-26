@@ -5,6 +5,8 @@ import com.manjitmentor.sms.request.SaveCourseRequest;
 import com.manjitmentor.sms.request.UpdateCourseRequest;
 
 public interface CourseService {
+    GenericResponse findActiveCourses();
+
     GenericResponse findAllCourses();
 
     GenericResponse findCourseById(Long id);
@@ -16,5 +18,6 @@ public interface CourseService {
     GenericResponse deleteCourse(Long id);
 
     GenericResponse findDeletedCourses();
+
 
 }

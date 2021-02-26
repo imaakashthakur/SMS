@@ -1,7 +1,7 @@
 package com.manjitmentor.sms.service.impl;
 
 import com.manjitmentor.sms.builder.ResponseBuilder;
-import com.manjitmentor.sms.constant.MessagesConstants;
+import com.manjitmentor.sms.constant.ResponseMsgConstant;
 import com.manjitmentor.sms.dto.GenericResponse;
 import com.manjitmentor.sms.model.ApplicationUser;
 import com.manjitmentor.sms.model.Course;
@@ -31,12 +31,30 @@ public class CourseServiceImpl implements CourseService {
         this.modelMapper = modelMapper;
     }
 
+    @Override
+    public GenericResponse findActiveCourses(){
+        final List<Course> allCourses = courseRepository.findAll();
+        if(allCourses.isEmpty()){
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.COURSE_NOT_FOUND);
+        }
+        List<CourseDTO> courseDTOList = new ArrayList<>();
+        courseDTOList = allCourses.stream()
+                .map(course -> modelMapper.map(course, CourseDTO.class))
+                .collect(Collectors.toList());
+        List<CourseDTO> activeCourses = new ArrayList<>();
+        for(CourseDTO c : courseDTOList){
+            if(c.getIsActive() == 'Y'){
+                activeCourses.add(c);
+            }
+        }
+        return ResponseBuilder.buildSuccess(ResponseMsgConstant.COURSE_FOUND, activeCourses);
+    }
 
     @Override
     public GenericResponse findAllCourses() {
         final List<Course> courses = courseRepository.findAll();
         if(courses.isEmpty()){
-            return ResponseBuilder.buildFailure(MessagesConstants.COURSE_NOT_FOUND);
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.COURSE_NOT_FOUND);
         }
         List<CourseDTO> courseDTOList = new ArrayList<>();
 
@@ -45,7 +63,7 @@ public class CourseServiceImpl implements CourseService {
                 .map(course -> modelMapper.map(course, CourseDTO.class))
                 .collect(Collectors.toList());
 
-        return ResponseBuilder.buildSuccess(MessagesConstants.COURSE_FOUND, courseDTOList);
+        return ResponseBuilder.buildSuccess(ResponseMsgConstant.COURSE_FOUND, courseDTOList);
 
     }
 
@@ -53,47 +71,47 @@ public class CourseServiceImpl implements CourseService {
     public GenericResponse findCourseById(Long id) {
         final Optional<Course> courseOptional = courseRepository.findById(id);
         if(!courseOptional.isPresent()){
-            return ResponseBuilder.buildFailure(MessagesConstants.COURSE_NOT_FOUND);
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.COURSE_NOT_FOUND);
         }
         if(courseOptional.get().getIsActive() == 'N'){
-            return ResponseBuilder.buildFailure(MessagesConstants.COURSE_WAS_DELETED);
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.COURSE_WAS_DELETED);
         }
         CourseDTO response = modelMapper.map(courseOptional.get(), CourseDTO.class);
         log.info("Response: {}", response);
-        return ResponseBuilder.buildSuccess(MessagesConstants.COURSE_FOUND, response);
+        return ResponseBuilder.buildSuccess(ResponseMsgConstant.COURSE_FOUND, response);
     }
 
     @Override
     public GenericResponse saveCourse(SaveCourseRequest request) {
         Course course = modelMapper.map(request, Course.class);
         if(course.getName().isEmpty() || course.getCode().isEmpty() || course.getDescription().isEmpty()){
-            return ResponseBuilder.buildFailure(MessagesConstants.COURSE_CANT_BE_EMPTY);
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.COURSE_CANT_BE_EMPTY);
         }
         course.setCreatedBy(new ApplicationUser(1L));
         course.setIsActive('Y');
         log.info("course: {}", course);
         log.info(course.getCreatedBy().toString());
         courseRepository.save(course);
-        return ResponseBuilder.buildSuccess(MessagesConstants.COURSE_SAVED);
+        return ResponseBuilder.buildSuccess(ResponseMsgConstant.COURSE_SAVED);
     }
 
     @Override
     public GenericResponse updateCourse(UpdateCourseRequest request, Long id) {
         Optional<Course> courseOptional = courseRepository.findById(id);
         if(!courseOptional.isPresent()){
-            return ResponseBuilder.buildFailure(MessagesConstants.COURSE_NOT_FOUND);
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.COURSE_NOT_FOUND);
         }
         Course course = new Course();
         course = modelMapper.map(request, Course.class);
         if(course.getName().isEmpty() || course.getCode().isEmpty() || course.getDescription().isEmpty()){
-            return ResponseBuilder.buildFailure(MessagesConstants.COURSE_CANT_BE_EMPTY);
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.COURSE_CANT_BE_EMPTY);
         }
         course.setId(id);
         course.setCreatedBy(new ApplicationUser(1L));
         course.setIsActive('Y');
         log.info("course: {}", course);
         courseRepository.save(course);
-        return ResponseBuilder.buildSuccess(MessagesConstants.COURSE_UPDATED);
+        return ResponseBuilder.buildSuccess(ResponseMsgConstant.COURSE_UPDATED);
 
     }
 
@@ -101,14 +119,14 @@ public class CourseServiceImpl implements CourseService {
     public GenericResponse deleteCourse(Long id) {
         Optional<Course> courseOptional = courseRepository.findById(id);
         if(!courseOptional.isPresent()){
-            return ResponseBuilder.buildFailure(MessagesConstants.COURSE_NOT_FOUND);
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.COURSE_NOT_FOUND);
         }
         else{
             Course course = new Course();
             course = modelMapper.map(courseOptional.get(), Course.class);
             course.setIsActive('N');
             courseRepository.save(course);
-            return ResponseBuilder.buildSuccess(MessagesConstants.COURSE_WAS_DELETED);
+            return ResponseBuilder.buildSuccess(ResponseMsgConstant.COURSE_WAS_DELETED);
         }
     }
 
@@ -116,7 +134,7 @@ public class CourseServiceImpl implements CourseService {
     public GenericResponse findDeletedCourses() {
         final List<Course> courseOptional = courseRepository.findAll();
         if(courseOptional.isEmpty()){
-            ResponseBuilder.buildFailure(MessagesConstants.COURSE_NOT_FOUND);
+            ResponseBuilder.buildFailure(ResponseMsgConstant.COURSE_NOT_FOUND);
         }
         List<CourseDTO> courseDTOList = new ArrayList<>();
         courseDTOList = courseOptional.stream()
@@ -128,6 +146,9 @@ public class CourseServiceImpl implements CourseService {
                 courseTrash.add(c);
             }
         }
-        return ResponseBuilder.buildSuccess(MessagesConstants.COURSE_FOUND, courseTrash);
+        if(courseTrash.isEmpty()){
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.COURSE_NO_TRASH);
+        }
+        return ResponseBuilder.buildSuccess(ResponseMsgConstant.COURSE_FOUND, courseTrash);
     }
 }

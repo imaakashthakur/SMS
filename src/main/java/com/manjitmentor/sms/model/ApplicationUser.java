@@ -28,7 +28,7 @@ public class ApplicationUser extends Auditable<ApplicationUser> {
             length = 100)
     private String address;
 
-    @Column(name = "CONTACT_NUMBER",
+    @Column(name = "CONTACT_NO",
             length = 15)
     private String contactNo;
 
@@ -47,6 +47,8 @@ public class ApplicationUser extends Auditable<ApplicationUser> {
             length = 1,
             nullable = false)
     private Character isActive;
+
+
 
 
     public ApplicationUser(Long id){

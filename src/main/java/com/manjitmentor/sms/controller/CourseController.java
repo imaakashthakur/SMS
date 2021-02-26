@@ -20,6 +20,13 @@ public class CourseController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GenericResponse> findActiveCourses(){
+        GenericResponse genericResponse = courseServiceImpl.findActiveCourses();
+        return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+    }
+
+    @GetMapping(value = APIPathConstants.SharedOperations.ALL,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GenericResponse> findAllCourses() {
         GenericResponse genericResponse = courseServiceImpl.findAllCourses();
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);

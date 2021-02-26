@@ -1,7 +1,7 @@
 package com.manjitmentor.sms.service.impl;
 
 import com.manjitmentor.sms.builder.ResponseBuilder;
-import com.manjitmentor.sms.constant.MessagesConstants;
+import com.manjitmentor.sms.constant.ResponseMsgConstant;
 import com.manjitmentor.sms.dto.GenericResponse;
 import com.manjitmentor.sms.dto.JwtDTO;
 import com.manjitmentor.sms.model.ApplicationUser;
@@ -38,11 +38,11 @@ public class AuthServiceImpl implements AuthService {
                 .findByEmailAddress(request.getEmailAddress());
 
         if(!applicationUserOptional.isPresent()){
-            return ResponseBuilder.buildFailure(MessagesConstants.EMAIL_PASSWORD_INCORRECT);
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.EMAIL_PASSWORD_INCORRECT);
         }
 
         if(applicationUserOptional.get().getIsActive() == 'N'){
-            return ResponseBuilder.buildFailure(MessagesConstants.USER_WAS_DELETED);
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.USER_WAS_DELETED);
         }
 
         else{
@@ -66,10 +66,10 @@ public class AuthServiceImpl implements AuthService {
                         .build();
 
                 String token = jwtService.generateToken(jwtData);
-                return ResponseBuilder.buildSuccess(MessagesConstants.AUTH_SUCCESSFUL, new AuthSuccessResponse(token));
+                return ResponseBuilder.buildSuccess(ResponseMsgConstant.AUTH_SUCCESSFUL, new AuthSuccessResponse(token));
             }
             else{
-                return ResponseBuilder.buildFailure(MessagesConstants.EMAIL_PASSWORD_INCORRECT);
+                return ResponseBuilder.buildFailure(ResponseMsgConstant.EMAIL_PASSWORD_INCORRECT);
             }
         }
 

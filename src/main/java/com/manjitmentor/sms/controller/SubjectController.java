@@ -18,7 +18,15 @@ public class SubjectController {
         this.subjectServiceImpl = subjectServiceImpl;
     }
 
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GenericResponse> findActiveSubjects(){
+        GenericResponse genericResponse = subjectServiceImpl.findActiveSubjects();
+        return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+    }
+
+    @GetMapping(value = APIPathConstants.SharedOperations.ALL,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GenericResponse> findAllSubjects(){
        GenericResponse genericResponse = subjectServiceImpl.findAllSubjects();
        return new ResponseEntity<>(genericResponse, HttpStatus.OK);

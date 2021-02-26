@@ -5,6 +5,8 @@ import com.manjitmentor.sms.request.SaveSubjectRequest;
 import com.manjitmentor.sms.request.UpdateSubjectRequest;
 
 public interface SubjectService {
+    GenericResponse findActiveSubjects();
+
     GenericResponse findAllSubjects();
 
     GenericResponse findSubjectById(Long id);

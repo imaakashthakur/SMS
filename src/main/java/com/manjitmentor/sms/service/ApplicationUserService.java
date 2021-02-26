@@ -5,9 +5,11 @@ import com.manjitmentor.sms.request.SaveUserRequest;
 import com.manjitmentor.sms.request.UpdateUserRequest;
 
 public interface ApplicationUserService {
+    GenericResponse getActiveApplicationUser();
+
     GenericResponse getAllApplicationUser();
 
-    GenericResponse getApplicationUserById(long id);
+    GenericResponse getApplicationUserById(Long id);
 
     GenericResponse saveApplicationUser(SaveUserRequest request);
 

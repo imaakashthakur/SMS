@@ -21,6 +21,14 @@ public class ApplicationUserController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GenericResponse> findActiveUsers(){
+        GenericResponse genericResponse = applicationUserService.getActiveApplicationUser();
+        return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+
+    }
+
+    @GetMapping(value = APIPathConstants.SharedOperations.ALL,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GenericResponse> findAllUsers(){
         GenericResponse genericResponse = applicationUserService.getAllApplicationUser();
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);
