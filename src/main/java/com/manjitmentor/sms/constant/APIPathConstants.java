@@ -21,5 +21,6 @@ public interface APIPathConstants {
         String DELETE = "delete";
         String TRASH = "trash";
         String ALL = "all";
+        String ROLLBACK = "rollback";
     }
 }

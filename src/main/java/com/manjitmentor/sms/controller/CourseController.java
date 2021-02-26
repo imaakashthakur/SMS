@@ -68,4 +68,11 @@ public class CourseController {
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
 
+    @GetMapping(value = APIPathConstants.SharedOperations.ROLLBACK + "/" + APIPathConstants.PathVariable.COURSEID_WRAPPER,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GenericResponse> rollBackDeletedCourses(@PathVariable(APIPathConstants.PathVariable.COURSEID) Long id){
+        GenericResponse genericResponse = courseServiceImpl.rollBackDeletedCourse(id);
+        return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+    }
+
 }

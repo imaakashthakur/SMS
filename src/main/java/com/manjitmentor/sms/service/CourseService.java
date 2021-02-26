@@ -19,5 +19,7 @@ public interface CourseService {
 
     GenericResponse findDeletedCourses();
 
+    GenericResponse rollBackDeletedCourse(Long id);
+
 
 }

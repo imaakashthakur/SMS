@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.attribute.standard.Media;
+
 @RestController
 @RequestMapping(APIPathConstants.USERS)
 public class ApplicationUserController {
@@ -71,6 +73,14 @@ public class ApplicationUserController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GenericResponse> findDeletedUsers(){
         GenericResponse genericResponse = applicationUserService.findDeletedUsers();
+        return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+    }
+
+    @GetMapping(value = APIPathConstants.SharedOperations.ROLLBACK + "/" + APIPathConstants.PathVariable.USERID_WRAPPER,
+                produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GenericResponse> rollBackDeletedUsers
+            (@PathVariable(APIPathConstants.PathVariable.USERID) Long id){
+        GenericResponse genericResponse = applicationUserService.rollBackDeletedUsers(id);
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
 

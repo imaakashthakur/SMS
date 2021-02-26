@@ -48,9 +48,6 @@ public class ApplicationUser extends Auditable<ApplicationUser> {
             nullable = false)
     private Character isActive;
 
-
-
-
     public ApplicationUser(Long id){
         super(id);
     }

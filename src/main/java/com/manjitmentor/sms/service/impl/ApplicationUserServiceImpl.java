@@ -198,5 +198,25 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
 
     }
 
+    @Override
+    public GenericResponse rollBackDeletedUsers(Long id) {
+        log.info("rollBackDeletedUsers() triggered!");
+        log.info("id: {}", id);
+        Optional<ApplicationUser> applicationUser = applicationUserRepository.findById(id);
+        if(!applicationUser.isPresent()){
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.USER_NOT_FOUND);
+        }
+        if(applicationUser.get().getIsActive() == 'Y'){
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.USER_NOT_IN_TRASH);
+        }
+        ApplicationUser deletedUser = new ApplicationUser();
+        deletedUser = modelMapper.map(applicationUser.get(), ApplicationUser.class);
+        deletedUser.setId(id);
+        deletedUser.setIsActive('Y');
+        applicationUserRepository.save(deletedUser);
+        log.info("Deleted User: {}", deletedUser);
+        return ResponseBuilder.buildSuccess(ResponseMsgConstant.USER_ROLLEDBACK);
+    }
+
 }
 

@@ -166,5 +166,22 @@ public class SubjectServiceImpl implements SubjectService {
             return ResponseBuilder.buildSuccess(ResponseMsgConstant.SUBJECT_FOUND, subjectTrash);
         }
     }
+
+    @Override
+    public GenericResponse rollBackDeletedSubject(Long id) {
+        Optional<Subject> optionalSubject = subjectRepository.findById(id);
+        if(!optionalSubject.isPresent()){
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.SUBJECT_NOT_FOUND);
+        }
+        if(optionalSubject.get().getIsActive() == 'Y'){
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.SUBJECT_NOT_IN_TRASH);
+        }
+        Subject deletedSubject = new Subject();
+        deletedSubject = modelMapper.map(optionalSubject.get(), Subject.class);
+        deletedSubject.setId(id);
+        deletedSubject.setIsActive('Y');
+        subjectRepository.save(deletedSubject);
+        return ResponseBuilder.buildSuccess(ResponseMsgConstant.SUBJECT_ROLLEDBACK);
+    }
 }
 

@@ -28,39 +28,44 @@ public class SubjectController {
     @GetMapping(value = APIPathConstants.SharedOperations.ALL,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GenericResponse> findAllSubjects(){
-       GenericResponse genericResponse = subjectServiceImpl.findAllSubjects();
-       return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+        GenericResponse genericResponse = subjectServiceImpl.findAllSubjects();
+        return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
 
     @GetMapping(value = APIPathConstants.PathVariable.SUBJECTID_WRAPPER
             ,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GenericResponse> findSubjectById(@PathVariable(APIPathConstants.PathVariable.SUBJECTID) Long id){
-       GenericResponse genericResponse = subjectServiceImpl.findSubjectById(id);
-       return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+    public ResponseEntity<GenericResponse> findSubjectById
+            (@PathVariable(APIPathConstants.PathVariable.SUBJECTID) Long id){
+        GenericResponse genericResponse = subjectServiceImpl.findSubjectById(id);
+        return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
 
     @PostMapping(value = APIPathConstants.SharedOperations.SAVE,
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GenericResponse> saveSubject(@RequestBody SaveSubjectRequest request){
-       GenericResponse genericResponse = subjectServiceImpl.saveSubject(request);
-       return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+    public ResponseEntity<GenericResponse> saveSubject
+            (@RequestBody SaveSubjectRequest request){
+        GenericResponse genericResponse = subjectServiceImpl.saveSubject(request);
+        return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
 
     @PostMapping(value = APIPathConstants.SharedOperations.UPDATE +
             "/" + APIPathConstants.PathVariable.SUBJECTID_WRAPPER,
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GenericResponse> updateSubject(@PathVariable(APIPathConstants.PathVariable.SUBJECTID)
-                                                             Long id, @RequestBody UpdateSubjectRequest request){
+    public ResponseEntity<GenericResponse> updateSubject
+            (@PathVariable(APIPathConstants.PathVariable.SUBJECTID)
+                     Long id, @RequestBody UpdateSubjectRequest request){
         GenericResponse genericResponse = subjectServiceImpl.updateSubject(request, id);
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
 
-    @GetMapping(value = APIPathConstants.SharedOperations.DELETE + "/" + APIPathConstants.PathVariable.SUBJECTID_WRAPPER)
-    public ResponseEntity<GenericResponse> deleteSubject(@PathVariable(APIPathConstants.PathVariable.SUBJECTID) Long id){
-       GenericResponse genericResponse = subjectServiceImpl.deleteSubject(id);
-       return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+    @GetMapping(value = APIPathConstants.SharedOperations.DELETE + "/" +
+            APIPathConstants.PathVariable.SUBJECTID_WRAPPER)
+    public ResponseEntity<GenericResponse> deleteSubject
+            (@PathVariable(APIPathConstants.PathVariable.SUBJECTID) Long id){
+        GenericResponse genericResponse = subjectServiceImpl.deleteSubject(id);
+        return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
 
     @GetMapping(value = APIPathConstants.SharedOperations.TRASH,
@@ -69,4 +74,14 @@ public class SubjectController {
         GenericResponse genericResponse = subjectServiceImpl.findDeletedSubjects();
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
+
+    @GetMapping(value = APIPathConstants.SharedOperations.ROLLBACK + "/" +
+            APIPathConstants.PathVariable.SUBJECTID_WRAPPER,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GenericResponse> rollBackDeletedUsers
+            (@PathVariable(APIPathConstants.PathVariable.SUBJECTID) Long id){
+        GenericResponse genericResponse = subjectServiceImpl.rollBackDeletedSubject(id);
+        return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+    }
+
 }

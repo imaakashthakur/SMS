@@ -151,4 +151,22 @@ public class CourseServiceImpl implements CourseService {
         }
         return ResponseBuilder.buildSuccess(ResponseMsgConstant.COURSE_FOUND, courseTrash);
     }
+
+    @Override
+    public GenericResponse rollBackDeletedCourse(Long id){
+        Optional<Course> courseOptional = courseRepository.findById(id);
+        if(!courseOptional.isPresent()){
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.COURSE_NOT_FOUND);
+        }
+        if(courseOptional.get().getIsActive() == 'Y'){
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.COURSE_NOT_IN_TRASH);
+        }
+        Course deletedCourse = new Course();
+        deletedCourse = modelMapper.map(courseOptional.get(), Course.class);
+        deletedCourse.setId(id);
+        deletedCourse.setIsActive('Y');
+        courseRepository.save(deletedCourse);
+
+        return ResponseBuilder.buildSuccess(ResponseMsgConstant.COURSE_ROLLEDBACK);
+    }
 }

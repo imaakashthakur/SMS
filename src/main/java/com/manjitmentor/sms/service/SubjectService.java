@@ -18,5 +18,7 @@ public interface SubjectService {
     GenericResponse deleteSubject(Long id);
 
     GenericResponse findDeletedSubjects();
+
+    GenericResponse rollBackDeletedSubject(Long id);
     
 }
