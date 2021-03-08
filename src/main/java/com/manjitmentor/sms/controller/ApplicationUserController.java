@@ -5,6 +5,7 @@ import com.manjitmentor.sms.dto.GenericResponse;
 import com.manjitmentor.sms.request.SaveUserRequest;
 import com.manjitmentor.sms.request.UpdateUserRequest;
 import com.manjitmentor.sms.service.ApplicationUserService;
+import com.manjitmentor.sms.service.impl.ApplicationUserServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +17,26 @@ import javax.print.attribute.standard.Media;
 @RequestMapping(APIPathConstants.USERS)
 public class ApplicationUserController {
 
-    private final ApplicationUserService applicationUserService;
+    //ApplicationUserController is dependent on ApplicationUserService to do it's jobs.
+    //We have created a variable for the class ApplicationUserService.
+
+    private final ApplicationUserService applicationUserService; //This variable will work as an object now.
+
+    //This constructor below is a Dependency Injection!!
+    //Here, Spring injects bean of ApplicationUserService and we can use it's implementation everywhere.
 
     public ApplicationUserController(ApplicationUserService applicationUserService) {
         this.applicationUserService = applicationUserService;
     }
 
+    // Initializing Object using new keyword is not possible here! ApplicationUserService is an Interface so DUH!?
+    // But this is not the reason we implemented DI here!
+    // ApplicationUserService applicationUserService = new ApplicationUserService();
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GenericResponse> findActiveUsers(){
         GenericResponse genericResponse = applicationUserService.getActiveApplicationUser();
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);
-
     }
 
     @GetMapping(value = APIPathConstants.SharedOperations.ALL,

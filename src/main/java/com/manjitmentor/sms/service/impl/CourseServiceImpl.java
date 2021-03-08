@@ -176,12 +176,20 @@ public class CourseServiceImpl implements CourseService {
         if(courseList.isEmpty()){
             return ResponseBuilder.buildFailure(ResponseMsgConstant.COURSE_NOT_FOUND);
         }
+        List<Course> courseListTrash = new ArrayList<>();
         for(Course c : courseList){
             if(c.getIsActive() == 'N'){
-                c.setIsActive('Y');
-                courseRepository.save(c);
+                courseListTrash.add(c);
             }
         }
+        if(courseListTrash.isEmpty()){
+            return ResponseBuilder.buildFailure(ResponseMsgConstant.COURSE_NO_TRASH);
+        }
+        for(Course c: courseListTrash){
+            c.setIsActive('Y');
+            courseRepository.save(c);
+        }
+
         return ResponseBuilder.buildSuccess(ResponseMsgConstant.ALL_COURSE_ROLLEDBACK);
     }
 }

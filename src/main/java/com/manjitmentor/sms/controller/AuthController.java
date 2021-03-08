@@ -29,7 +29,10 @@ public class AuthController {
     ResponseEntity<GenericResponse> login(@RequestBody AuthRequest authRequest){
         log.info("Login in Auth Controller Triggered!!..");
         log.info("authRequest: {}", authRequest);
+
         GenericResponse genericResponse = authService.login(authRequest);
+        //This authService is an object of AuthService which is AuthService's object.
+
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
 }

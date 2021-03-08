@@ -12,6 +12,7 @@ import com.manjitmentor.sms.service.ApplicationUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,13 +22,14 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class ApplicationUserServiceImpl implements ApplicationUserService {
+@Primary
+public class ApplicationUserServiceImpl2 implements ApplicationUserService {
 
     private final ApplicationUserRepository applicationUserRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ApplicationUserServiceImpl(ApplicationUserRepository applicationUserRepository, ModelMapper modelMapper) {
+    public ApplicationUserServiceImpl2(ApplicationUserRepository applicationUserRepository, ModelMapper modelMapper) {
         this.applicationUserRepository = applicationUserRepository;
         this.modelMapper = modelMapper;
     }
