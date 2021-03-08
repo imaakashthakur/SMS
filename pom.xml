@@ -32,12 +32,8 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 			<exclusions>
 				<exclusion>
-					<groupId>logback-classic</groupId>
-					<artifactId>ch.qos.logback</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>log4j-over-slf4j</groupId>
-					<artifactId>org.slf4j</artifactId>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
