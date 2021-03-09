@@ -23,14 +23,10 @@ import java.util.stream.Collectors;
 @Service
 public class ApplicationUserServiceImpl implements ApplicationUserService {
 
-    private final ApplicationUserRepository applicationUserRepository;
-    private final ModelMapper modelMapper;
-
     @Autowired
-    public ApplicationUserServiceImpl(ApplicationUserRepository applicationUserRepository, ModelMapper modelMapper) {
-        this.applicationUserRepository = applicationUserRepository;
-        this.modelMapper = modelMapper;
-    }
+    private ApplicationUserRepository applicationUserRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public GenericResponse getActiveApplicationUser(){

@@ -19,5 +19,4 @@ public class JwtDTO {
     private String emailAddress;
     private Date issuedAt;
     private Date expiryAt;
-
 }

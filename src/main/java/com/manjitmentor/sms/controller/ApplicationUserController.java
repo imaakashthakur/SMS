@@ -7,12 +7,15 @@ import com.manjitmentor.sms.request.SaveUserRequest;
 import com.manjitmentor.sms.request.UpdateUserRequest;
 import com.manjitmentor.sms.service.ApplicationUserService;
 import com.manjitmentor.sms.service.impl.ApplicationUserServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping(APIPathConstants.USERS)
 public class ApplicationUserController {
@@ -27,6 +30,7 @@ public class ApplicationUserController {
      implementations*/
 
     public ApplicationUserController(ApplicationUserService applicationUserService) {
+        log.info("ApplicationUserController Constructor triggered!");
         this.applicationUserService = applicationUserService;
     }
 

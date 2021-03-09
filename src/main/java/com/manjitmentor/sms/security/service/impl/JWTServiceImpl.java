@@ -32,8 +32,6 @@ public class JWTServiceImpl implements JWTService<JwtDTO> {
                 .setIssuedAt(source.getIssuedAt())
                 .signWith(SignatureAlgorithm.HS512, base64EncodedSecretKey)
                 .compact();
-
-
     }
 
     @Override
@@ -59,10 +57,10 @@ public class JWTServiceImpl implements JWTService<JwtDTO> {
                     .expiryAt(body.getExpiration())
                     .id(Long.valueOf(body.getId()))
                     .build();
+
         } catch (Exception exception){
             log.debug("Exception: {}", exception.getMessage());
         }
-
         return jwtDTOBuilder.build();
     }
 }
