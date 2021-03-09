@@ -17,19 +17,20 @@ import java.util.Date;
 @Service
 public class JWTServiceImpl implements JWTService<JwtDTO> {
     String secretKey = "9z$C&F)J@NcRfUjXn2r5u8x!A%D*G-KaPdSgVkYp3s6v9y$B?E(H+MbQeThWmZq4";
-    String base64EncodedSecretKey = Base64.getEncoder().encodeToString(secretKey.getBytes(StandardCharsets.UTF_8));
     @Override
     public String generateToken(JwtDTO source) {
+        String base64EncodedSecretKey = Base64.getEncoder().encodeToString(secretKey.getBytes(StandardCharsets.UTF_8));
         log.info(String.valueOf(source));
 
-        return Jwts.builder()
+        return Jwts
+                .builder()
                 .setClaims(source.getClaims())
                 .setSubject(source.getEmailAddress())
                 .setIssuer(source.getIssuer())
                 .setId(source.getId().toString())
                 .setExpiration(source.getExpiryAt())
                 .setIssuedAt(source.getIssuedAt())
-                .signWith(SignatureAlgorithm.HS256, base64EncodedSecretKey)
+                .signWith(SignatureAlgorithm.HS512, base64EncodedSecretKey)
                 .compact();
 
 
@@ -49,17 +50,19 @@ public class JWTServiceImpl implements JWTService<JwtDTO> {
             final Date expiration = body.getExpiration();
             log.info("Expires in: {}", expiration);
 
-            return jwtDTOBuilder.authenticated(true)
+            return jwtDTOBuilder
+                    .authenticated(true)
                     .claims(body)
                     .emailAddress(body.getSubject())
                     .issuedAt(body.getIssuedAt())
                     .issuer(body.getIssuer())
-                    .expiryAt(expiration)
+                    .expiryAt(body.getExpiration())
                     .id(Long.valueOf(body.getId()))
                     .build();
         } catch (Exception exception){
-            log.debug("Exception Found!: {}", exception);
+            log.debug("Exception: {}", exception.getMessage());
         }
-        return JwtDTO.builder().build();
+
+        return jwtDTOBuilder.build();
     }
 }

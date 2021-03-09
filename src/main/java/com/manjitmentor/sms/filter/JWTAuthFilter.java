@@ -28,10 +28,11 @@ public class JWTAuthFilter implements Filter {
 
         if(request.getRequestURI().contains("login")){
             filterChain.doFilter(request, response);
+            return;
         }
 
-        String token = request.getHeader("authorization");
-        JwtDTO jwtData = jwtService.verifyToken(token);
+        String token = request.getHeader("Authorization");
+        final JwtDTO jwtData = jwtService.verifyToken(token);
         log.debug("isAuth: {}", jwtData.isAuthenticated());
 
         if(!jwtData.isAuthenticated()){

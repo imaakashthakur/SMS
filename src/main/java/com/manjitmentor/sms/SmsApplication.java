@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SmsApplication {
 
 	public static void main(String[] args) {
+		log.info("This is where Spring Application SMS starts.");
 		SpringApplication.run(SmsApplication.class, args);
 		printBanner();
 	}
