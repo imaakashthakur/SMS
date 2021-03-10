@@ -12,11 +12,11 @@ import java.util.Map;
 @ToString
 
 public class JwtDTO {
+    private boolean authenticated;
     private Map<String, Object> claims;
     private String issuer = "SMS";
     private Long id;
     private String emailAddress;
     private Date issuedAt;
     private Date expiryAt;
-
 }

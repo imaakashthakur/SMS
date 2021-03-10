@@ -2,36 +2,37 @@ package com.manjitmentor.sms.controller;
 
 import com.manjitmentor.sms.constant.APIPathConstants;
 import com.manjitmentor.sms.dto.GenericResponse;
+import com.manjitmentor.sms.repository.ApplicationUserRepository;
 import com.manjitmentor.sms.request.SaveUserRequest;
 import com.manjitmentor.sms.request.UpdateUserRequest;
 import com.manjitmentor.sms.service.ApplicationUserService;
 import com.manjitmentor.sms.service.impl.ApplicationUserServiceImpl;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Media;
-
+@Slf4j
 @RestController
 @RequestMapping(APIPathConstants.USERS)
 public class ApplicationUserController {
 
-    //ApplicationUserController is dependent on ApplicationUserService to do it's jobs.
-    //We have created a variable for the class ApplicationUserService.
+    /*ApplicationUserController is dependent on ApplicationUserService to do it's jobs.
+     We have created a variable for the class ApplicationUserService.*/
 
     private final ApplicationUserService applicationUserService; //This variable will work as an object now.
 
-    //This constructor below is a Dependency Injection!!
-    //Here, Spring injects bean of ApplicationUserService and we can use it's implementation everywhere.
+    /*This constructor below is a Dependency Injection!!
+     Instead of initializing ApplicationUserService and it's implementation, it created a DI to access its
+     implementations*/
 
     public ApplicationUserController(ApplicationUserService applicationUserService) {
+        log.info("ApplicationUserController Constructor triggered!");
         this.applicationUserService = applicationUserService;
     }
-
-    // Initializing Object using new keyword is not possible here! ApplicationUserService is an Interface so DUH!?
-    // But this is not the reason we implemented DI here!
-    // ApplicationUserService applicationUserService = new ApplicationUserService();
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GenericResponse> findActiveUsers(){
@@ -78,7 +79,6 @@ public class ApplicationUserController {
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
 
-
     @GetMapping(value = APIPathConstants.SharedOperations.TRASH,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GenericResponse> findDeletedUsers(){
@@ -87,7 +87,7 @@ public class ApplicationUserController {
     }
 
     @GetMapping(value = APIPathConstants.SharedOperations.ROLLBACK + "/" + APIPathConstants.PathVariable.USERID_WRAPPER,
-                produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GenericResponse> rollBackDeletedUsers
             (@PathVariable(APIPathConstants.PathVariable.USERID) Long id){
         GenericResponse genericResponse = applicationUserService.rollBackDeletedUsers(id);
@@ -99,5 +99,4 @@ public class ApplicationUserController {
         GenericResponse genericResponse = applicationUserService.rollBackAllDeletedUsers();
         return new ResponseEntity<>(genericResponse, HttpStatus.OK);
     }
-
 }

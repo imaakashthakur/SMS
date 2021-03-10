@@ -206,4 +206,3 @@ public class SubjectServiceImpl implements SubjectService {
         return ResponseBuilder.buildSuccess(ResponseMsgConstant.ALL_SUBJECTS_ROLLEDBACK);
     }
 }
-

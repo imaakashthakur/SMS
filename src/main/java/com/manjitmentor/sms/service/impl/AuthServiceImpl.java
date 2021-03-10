@@ -54,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
 
                 Map<String, Object> role = new HashMap<>();
 
-                role.put("role", "user");
+                role.put("name", applicationUser.getFirstName());
 
                 final JwtDTO jwtData = JwtDTO
                         .builder()
@@ -66,6 +66,7 @@ public class AuthServiceImpl implements AuthService {
                         .build();
 
                 String token = jwtService.generateToken(jwtData);
+                log.info("token: {}", token);
                 return ResponseBuilder.buildSuccess(ResponseMsgConstant.AUTH_SUCCESSFUL, new AuthSuccessResponse(token));
             }
             else{
