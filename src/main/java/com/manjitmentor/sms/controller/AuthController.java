@@ -2,11 +2,13 @@ package com.manjitmentor.sms.controller;
 
 
 import com.manjitmentor.sms.constant.APIPathConstants;
+import com.manjitmentor.sms.constant.SecurityConstants;
 import com.manjitmentor.sms.dto.GenericResponse;
 import com.manjitmentor.sms.request.AuthRequest;
+import com.manjitmentor.sms.response.AuthSuccessResponse;
 import com.manjitmentor.sms.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +33,15 @@ public class AuthController {
         log.info("authRequest: {}", authRequest);
 
         GenericResponse genericResponse = authService.login(authRequest);
-        //This authService is an object of AuthService which is AuthService's object.
+        AuthSuccessResponse response =(AuthSuccessResponse) genericResponse.getData();
 
-        return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(SecurityConstants.JWT_TOKEN_KEY,
+                SecurityConstants.JWT_TOKEN_PREFIX + response.getToken());
+        genericResponse.setData(null);
+
+        return ResponseEntity.ok()
+                .headers(httpHeaders)
+                .body(genericResponse);
     }
 }

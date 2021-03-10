@@ -2,6 +2,8 @@ package com.manjitmentor.sms.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.manjitmentor.sms.builder.ResponseBuilder;
+import com.manjitmentor.sms.constant.ResponseMsgConstant;
+import com.manjitmentor.sms.constant.SecurityConstants;
 import com.manjitmentor.sms.dto.GenericResponse;
 import com.manjitmentor.sms.dto.JwtDTO;
 import com.manjitmentor.sms.repository.ApplicationUserRepository;
@@ -34,21 +36,41 @@ public class JWTAuthFilter implements Filter {
             filterChain.doFilter(request, response);
             return;
         }
+        String token = request.getHeader(SecurityConstants.JWT_TOKEN_KEY);
 
-        String token = request.getHeader("Authorization");
+        if(token == null){
+            buildFailure(response, ResponseMsgConstant.AUTH_TOKEN_NOT_FOUND);
+            return;
+        }
+
+        if(!token.contains(SecurityConstants.JWT_TOKEN_PREFIX)){
+            buildFailure(response, ResponseMsgConstant.AUTH_TOKEN_NOT_FOUND);
+            return;
+        }
+
+        token = token.replace(SecurityConstants.JWT_TOKEN_PREFIX, "");
+
+        if(token.trim().length() > 0){
+            buildFailure(response, ResponseMsgConstant.AUTH_TOKEN_NOT_FOUND);
+            return;
+        }
+
         final JwtDTO jwtData = jwtService.verifyToken(token);
 
         log.debug("isAuth: {}", jwtData.isAuthenticated());
         log.debug("EmailAddress: {}", jwtData.getEmailAddress());
 
         if(!jwtData.isAuthenticated()){
-            final GenericResponse genericResponse = ResponseBuilder.buildFailure("Unauthorized");
-            String responseString = new ObjectMapper().writeValueAsString(genericResponse);
-            response.setContentType("application/json");
-            response.setStatus(401);
-            response.getOutputStream().write(responseString.getBytes());
+            buildFailure(response, ResponseMsgConstant.UNAUTHORIZED);
         }else {
             filterChain.doFilter(request, response);
         }
+    }
+    public void buildFailure(HttpServletResponse response, String msg) throws IOException {
+        final GenericResponse genericResponse = ResponseBuilder.buildFailure(msg);
+        String responseString = new ObjectMapper().writeValueAsString(genericResponse);
+        response.setContentType("application/json");
+        response.setStatus(401);
+        response.getOutputStream().write(responseString.getBytes());
     }
 }

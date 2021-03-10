@@ -1,6 +1,7 @@
 package com.manjitmentor.sms.constant;
 
 public interface ResponseMsgConstant {
+    //Constants for User Operations
     String USER_SAVED = "Users are stored in Database successfully!";
     String USER_UPDATED = "User was updated successfully!";
     String USER_NOT_FOUND = "Could not find the User!";
@@ -14,7 +15,7 @@ public interface ResponseMsgConstant {
     String USER_ROLLEDBACK = "The deleted User was rolled back successfully!";
     String ALL_USERS_ROLLEDBACK = "All the deleted users are rolled back successfully!";
 
-
+    //Constants for Course Operations
     String COURSE_SAVED = "Courses are stored in Database successfully!";
     String COURSE_UPDATED = "Course was updated successfully!";
     String COURSE_NOT_FOUND = "Could not find the Course!";
@@ -26,6 +27,7 @@ public interface ResponseMsgConstant {
     String COURSE_ROLLEDBACK = "The deleted Course was rolled back successfully!";
     String ALL_COURSE_ROLLEDBACK = "All the deleted Courses are rolled back successfully!";
 
+    //Constants for Subject Operations
     String SUBJECT_SAVED = "Subjects are stored in Database successfully!";
     String SUBJECT_UPDATED = "Subjects was updated successfully!";
     String SUBJECT_NOT_FOUND = "Could not find the Subject!";
@@ -37,8 +39,10 @@ public interface ResponseMsgConstant {
     String SUBJECT_ROLLEDBACK = "The deleted Subject was rolled back successfully!";
     String ALL_SUBJECTS_ROLLEDBACK = "All deleted Subjects are rolled back successfully!";
 
+    ////Constants for Login and Authorization Operations
     String EMAIL_PASSWORD_INCORRECT = "The username/password you entered is incorrect!";
-    String LOGIN_SUCCESSFUL = "The login was successful!";
     String AUTH_SUCCESSFUL = "Authentication was successful!";
+    String AUTH_TOKEN_NOT_FOUND = "Authorization Token not found!";
+    String UNAUTHORIZED = "Unauthorized!";
 
 }
