@@ -50,7 +50,7 @@ public class JWTAuthFilter implements Filter {
 
         token = token.replace(SecurityConstants.JWT_TOKEN_PREFIX, "");
 
-        if(token.trim().length() > 0){
+        if(!(token.trim().length() > 0)){
             buildFailure(response, ResponseMsgConstant.AUTH_TOKEN_NOT_FOUND);
             return;
         }

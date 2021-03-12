@@ -31,7 +31,6 @@ public class AuthServiceImpl implements AuthService {
         this.jwtService = jwtService;
     }
 
-
     @Override
     public GenericResponse login(AuthRequest request) {
         Optional<ApplicationUser> applicationUserOptional = applicationUserRepository
@@ -73,6 +72,5 @@ public class AuthServiceImpl implements AuthService {
                 return ResponseBuilder.buildFailure(ResponseMsgConstant.EMAIL_PASSWORD_INCORRECT);
             }
         }
-
     }
 }
